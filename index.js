@@ -9,14 +9,13 @@ var id = 0;
 
 io.on('connection', function (socket) {
   var clientId = id++;
-  userCount++;
+
   socket.emit('id', clientId);
-  io.emit('users', userCount);
+  io.emit('users', ++userCount);
   console.log('Client %d Connected', clientId);
 
   socket.on('disconnect', function () {
-    userCount--;
-    io.emit('users', userCount);
+    io.emit('users', --userCount);
     console.log('Client %d Disconnected', clientId);
   });
 });
