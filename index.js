@@ -1,7 +1,6 @@
 var socketio = require('socket.io');
 var kraken = require('kraken-js');
 var express = require('express');
-var http = require('http');
 var app = express();
 var io = socketio();
 
@@ -25,9 +24,8 @@ io.on('connection', function (socket) {
 app.use(kraken());
 
 app.on('start', function () {
-  var server = http.createServer(app);
-  io.attach(server);
-  server.listen(8000, function () {
-    console.log('Listening on %d ...', this.address().port);
-  });
+  console.log('Ready to rock ...');
 });
+
+io.attach(app.listen(8000));
+
