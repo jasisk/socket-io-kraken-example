@@ -4,19 +4,16 @@ var express = require('express');
 var app = express();
 var io = socketio();
 
-var userCount = 0;
-var id = 0;
-
 io.on('connection', function (socket) {
-  var clientId = id++;
+  var sockets = io.of('/').sockets;
 
-  socket.emit('id', clientId);
-  io.emit('users', ++userCount);
-  console.log('Client %d Connected', clientId);
+  socket.emit('id', socket.id);
+  io.emit('users', sockets.length);
+  console.log('Client %s Connected', socket.id);
 
   socket.on('disconnect', function () {
-    io.emit('users', --userCount);
-    console.log('Client %d Disconnected', clientId);
+    io.emit('users', sockets.length);
+    console.log('Client %s Disconnected', socket.id);
   });
 });
 
